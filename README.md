@@ -1,4 +1,4 @@
-#React-redux test task:
+# React-redux test task:
 
 * A single view that displays any information from any public api. The api can be literally any API.
 A good example of public API can be found here: https://openweathermap.org/api. You will receive bonus points for making this API call using the fetch package and then manipulating the data in Redux
