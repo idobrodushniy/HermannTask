@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import WeatherTable from './App';
-import {Provider} from 'react-redux';
-import store from './store';
+import Root from './containers/Root'
 
 ReactDOM.render(
-    <Provider store={store}>
-        <WeatherTable />
-    </Provider>,
+    <Root/>,
     document.getElementById('root')
 );

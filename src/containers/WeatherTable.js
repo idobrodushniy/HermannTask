@@ -1,28 +1,11 @@
-import React, {Component} from 'react';
+import loadDataSet from '../actions/loadDataSet';
 import {connect} from 'react-redux'
-import './App.css';
+import React, {Component} from 'react';
+import '../App.css';
 import {Table, Button} from 'semantic-ui-react';
-import fetch from 'isomorphic-fetch';
 import jsPDF from 'jspdf';
 import $ from 'jquery';
-
-
-class UniqueRaw extends Component {
-    render() {
-        return (
-            <Table.Row>
-                <Table.Cell>{this.props.data.grnd_level}</Table.Cell>
-                <Table.Cell>{this.props.data.humidity}</Table.Cell>
-                <Table.Cell>{this.props.data.pressure}</Table.Cell>
-                <Table.Cell>{this.props.data.sea_level}</Table.Cell>
-                <Table.Cell>{this.props.data.temp}</Table.Cell>
-                <Table.Cell>{this.props.data.temp_kf}</Table.Cell>
-                <Table.Cell>{this.props.data.temp_max}</Table.Cell>
-                <Table.Cell>{this.props.data.temp_min}</Table.Cell>
-            </Table.Row>
-        );
-    }
-}
+import UniqueRaw from '../components/UniqueRaw';
 
 class WeatherTable extends Component {
 
@@ -40,9 +23,7 @@ class WeatherTable extends Component {
                 var rowData = {};
 
                 for (let j = 0; j < tableRow.cells.length; j++) {
-
                     rowData[headers[j]] = tableRow.cells[j].innerHTML;
-
                 }
 
                 data.push(rowData);
@@ -63,19 +44,10 @@ class WeatherTable extends Component {
     }
 
     componentDidMount() {
-        fetch(`/data/2.5/forecast?id=524901&appid=b1b15e88fa797225412429c1c50c122a1`,
-            {
-                method: 'get'
-
-            }).then((response) => {
-            return response.json()
-        }).then((data) => {
-            this.props.onLoadData(data.list)
-        })
+        this.props.onLoadData()
     }
 
     render() {
-        var i = 0;
         return (
             <div className="WeatherTable">
                 <Table celled inverted selectable id="dataset">
@@ -94,8 +66,7 @@ class WeatherTable extends Component {
                     <Table.Body>
                         {
                             this.props.store.map((el) => {
-                                i++;
-                                return (<UniqueRaw data={el.main} key={i}/>)
+                                return (<UniqueRaw data={el.main} key={el.dt}/>)
                             })
                         }
                     </Table.Body>
@@ -106,13 +77,14 @@ class WeatherTable extends Component {
     }
 }
 
+
 export default connect(
     state => ({
         store: state
     }),
     dispatch => ({
-        onLoadData: (data) => {
-            dispatch({type: 'getdata', newstate: data})
+        onLoadData: () => {
+            loadDataSet(dispatch)
         }
     })
 )(WeatherTable);
