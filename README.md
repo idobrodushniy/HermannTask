@@ -12,6 +12,7 @@ For solving those tasks i have used :
 * ReactJS
 * Redux
 * semantic-ui-react
+* jsPDF
 
 To start:
 ```
